@@ -39,8 +39,9 @@ int main(int argc, char** argv) {
     last = c;
   }
 
-  if (feof(stdin)) {
-    io_error(stdin);
+  if (ferror(stdin)) {
+    perror("output error");
+    return EXIT_FAILURE;
   }
   return EXIT_SUCCESS;
 }
