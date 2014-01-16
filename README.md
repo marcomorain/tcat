@@ -1,6 +1,5 @@
-
 # Time Cat
-Time Cat is a program to add timestamps to text. It is useful for piping long running operations.
+Time Cat is a program to add timestamps to text. It is useful for adding timestamps to the logs of long running operations, so that you can easily monitor the progress and time elapsed.
 
 Time Cat has no options or configuration. It simple reads from `stdin` and echoes the input to `stdout` prepended with a timestamp and a single tab character.
 
