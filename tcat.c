@@ -3,6 +3,8 @@
 #include <time.h>
 #include <assert.h>
 
+const static char format[] = "%Y-%m-%dT%H:%M:%SZ\t";
+
 static void io_error(FILE* file) {
   if (feof(file)) {
     fputs("file closed", stderr);
@@ -20,7 +22,7 @@ static void print_time() {
   time_t rawtime;
   time(&rawtime);
   struct tm* timeinfo = localtime(&rawtime);
-  const size_t len = strftime(buffer, buffer_max, "%Y:%m:%d %H:%M:%S\t", timeinfo);
+  const size_t len = strftime(buffer, buffer_max, format, timeinfo);
   if(len != fwrite(buffer, 1, len, stdout)){
     io_error(stdout);
   }
