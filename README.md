@@ -3,6 +3,11 @@ Time Cat is a program to add timestamps to text. It is useful for adding timesta
 
 Time Cat has no options or configuration. It simple reads from `stdin` and echoes the input to `stdout` prepended with a timestamp and a single tab character.
 
+```
+$ echo "Hello world" | tcat
+2014:01:18 13:13:35	Hello world
+```
+
 ## Usage
 The following is the ouput from the `ping` command: 
 ```
