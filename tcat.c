@@ -36,12 +36,24 @@ static void print_time() {
   }
 }
 
-static void version(){
-  fprintf(stdout, "%s version %d.%d.%d\n",
+static void version(FILE* output) {
+  fprintf(output, "%s version %d.%d.%d\n",
     program_name,
     version_major,
     version_minor,
     version_patch);
+}
+
+static void usage(FILE* output, const char* arg) {
+  if (arg) {
+    fprintf(output, "Invalid option: %s\n", arg);
+  }
+  fprintf(output,
+          "Options:\n"
+          "  -v, --version print %s version\n"
+          "  -h, --help    print this help\n"
+          "Help can be found at github.com/marcomorain/tcat\n",
+          program_name);
 }
 
 static int match(const char* x, const char* a, const char* b) {
@@ -52,9 +64,17 @@ int main(int argc, char** argv) {
 
   for (int i = 1; i < argc; i++) {
     if (match(argv[i], "-v", "--version")) {
-      version();
+      version(stdout);
       return EXIT_SUCCESS;
     }
+
+    if (match(argv[i], "-h", "--help")) {
+      usage(stdout, 0);
+      return EXIT_SUCCESS;
+    }
+
+    // Unrecognised command
+    usage(stderr, argv[i]);
     return EXIT_FAILURE;
   }
 
