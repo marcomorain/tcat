@@ -1,9 +1,16 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
-#include <assert.h>
 
-const static char format[] = "%Y-%m-%dT%H:%M:%S%Z\t";
+enum {
+  version_major = 0,
+  version_minor = 1,
+  version_patch  = 0
+};
+
+const static char program_name[] = "tcat";
+const static char format[]       = "%Y-%m-%dT%H:%M:%S%Z\t";
 
 static void io_error(FILE* file) {
   if (feof(file)) {
@@ -29,7 +36,28 @@ static void print_time() {
   }
 }
 
+static void version(){
+  fprintf(stdout, "%s version %d.%d.%d\n",
+    program_name,
+    version_major,
+    version_minor,
+    version_patch);
+}
+
+static int match(const char* x, const char* a, const char* b) {
+  return (!strcmp(x, a)) || (!strcmp(x, b));
+}
+
 int main(int argc, char** argv) {
+
+  for (int i = 1; i < argc; i++) {
+    if (match(argv[i], "-v", "--version")) {
+      version();
+      return EXIT_SUCCESS;
+    }
+    return EXIT_FAILURE;
+  }
+
   int last = '\n';
   for(int c = fgetc(stdin); c != EOF; c = fgetc(stdin)) {
     if (last == '\n') {
