@@ -1,7 +1,7 @@
 TARGET = tcat
 LIBS = -lm
 CC = gcc
-CFLAGS = -g -Wall
+CFLAGS = -Wall -Wextra -Os
 
 .PHONY: default all clean
 

@@ -5,7 +5,7 @@ Time Cat has no options or configuration. It simple reads from `stdin` and echoe
 
 ```
 $ echo "Hello world" | tcat
-2014:01:18 13:13:35	Hello world
+2014-02-06T21:12:13UTC  Hello world
 ```
 
 ## Usage
@@ -24,14 +24,14 @@ round-trip min/avg/max/stddev = 104.271/110.913/117.178/5.276 ms
 The following is the same command, but this time the output has been piped through `tcat` to add a timestamp to each line.
 ```
 $ ping -c 3 github.com | tcat
-2014:01:16 17:52:19	PING github.com (192.30.252.130): 56 data bytes
-2014:01:16 17:52:19	64 bytes from 192.30.252.130: icmp_seq=0 ttl=49 time=108.924 ms
-2014:01:16 17:52:20	64 bytes from 192.30.252.130: icmp_seq=1 ttl=49 time=108.078 ms
-2014:01:16 17:52:21	64 bytes from 192.30.252.130: icmp_seq=2 ttl=49 time=113.235 ms
-2014:01:16 17:52:21
-2014:01:16 17:52:21	--- github.com ping statistics ---
-2014:01:16 17:52:21	3 packets transmitted, 3 packets received, 0.0% packet loss
-2014:01:16 17:52:21	round-trip min/avg/max/stddev = 108.078/110.079/113.235/2.258 ms
+2014-02-06T21:11:37UTC  PING github.com (192.30.252.131): 56 data bytes
+2014-02-06T21:11:37UTC  64 bytes from 192.30.252.131: icmp_seq=0 ttl=53 time=242.162 ms
+2014-02-06T21:11:38UTC  64 bytes from 192.30.252.131: icmp_seq=1 ttl=53 time=238.695 ms
+2014-02-06T21:11:39UTC  64 bytes from 192.30.252.131: icmp_seq=2 ttl=53 time=231.438 ms
+2014-02-06T21:11:39UTC
+2014-02-06T21:11:39UTC  --- github.com ping statistics ---
+2014-02-06T21:11:39UTC  3 packets transmitted, 3 packets received, 0.0% packet loss
+2014-02-06T21:11:39UTC  round-trip min/avg/max/stddev = 231.438/237.432/242.162/4.468 ms
 ```
 
 ## Advanced Usage
@@ -40,7 +40,7 @@ Time Cat prepends each line of input with a timestamp followed by a single tab c
 $ echo foo
 foo
 $ echo foo | tcat
-2014:01:16 17:55:19	foo
+2014-02-06T21:14:16UTC  foo
 $ echo foo | tcat | cut -f 2
 foo
 ```
