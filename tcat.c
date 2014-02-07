@@ -10,7 +10,7 @@ enum {
 };
 
 const static char program_name[] = "tcat";
-const static char format[]       = "%Y-%m-%dT%H:%M:%S%Z\t";
+const static char format[]       = "%Y-%m-%dT%H:%M:%S %Z\t";
 
 static void io_error(FILE* file) {
   if (feof(file)) {
