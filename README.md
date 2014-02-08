@@ -46,7 +46,7 @@ foo
 ```
 
 ## Contibuting
-If you'd like to contribute to `tcat`, that's awesome. Feel free to open a pull request or log an issue. For recent changes see the changelog.
+If you'd like to contribute to `tcat`, that's awesome. Feel free to open a pull request or log an issue. For recent changes see the [changelog](https://github.com/marcomorain/tcat/blob/master/CHANGELOG.md).
 
 [![Build Status](https://travis-ci.org/marcomorain/tcat.png?branch=master)](https://travis-ci.org/marcomorain/tcat)
 
