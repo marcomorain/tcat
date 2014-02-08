@@ -45,5 +45,10 @@ $ echo foo | tcat | cut -f 2
 foo
 ```
 
+## Contibuting
+If you'd like to contribute to `tcat`, that's awesome. Feel free to open a pull request or log an issue. For recent changes see the changelog.
+
+The master branch contains our current progress towards version 1.5. Versions 1.0-1.3 each have their own stable branches. Please submit bugfixes as pull requests to the stable branch for the version you would like to fix.
+
 ## License
 Time Cat is released under the [MIT License](http://www.opensource.org/licenses/MIT).
