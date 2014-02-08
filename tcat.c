@@ -10,7 +10,7 @@ enum {
 };
 
 const static char program_name[] = "tcat";
-const static char format[]       = "%Y-%m-%dT%H:%M:%S %Z\t";
+const static char *format        = "%Y-%m-%dT%H:%M:%S %Z\t";
 
 static void io_error(FILE* file) {
   if (feof(file)) {
@@ -52,8 +52,9 @@ static void usage(FILE* output, const char* arg) {
           "Options:\n"
           "  -v, --version print %s version\n"
           "  -h, --help    print this help\n"
+          "  -f, --format  set time format (default: \"%s\")\n"
           "Help can be found at github.com/marcomorain/tcat\n",
-          program_name);
+          program_name, format);
 }
 
 static int match(const char* x, const char* a, const char* b) {
@@ -71,6 +72,15 @@ int main(int argc, char** argv) {
     if (match(argv[i], "-h", "--help")) {
       usage(stdout, 0);
       return EXIT_SUCCESS;
+    }
+
+    if (match(argv[i], "-f", "--format")) {
+      if (++i >= argc) {
+        fprintf(stderr, "Missing time format argument\n");
+        return EXIT_FAILURE;
+      }
+      format = argv[i];
+      continue;
     }
 
     // Unrecognised command

@@ -34,6 +34,20 @@ $ ping -c 3 github.com | tcat
 2014-02-06T21:11:39UTC  round-trip min/avg/max/stddev = 231.438/237.432/242.162/4.468 ms
 ```
 
+The time format can be changed by `-f` or `--format` as shown in the following example:
+
+```
+$ ping -c 3 github.com | tcat -f '%H:%M:%S '
+03:54:38 PING github.com (192.30.252.131) 56(84) bytes of data.
+03:54:38 64 bytes from ip1d-lb3-prd.iad.github.com (192.30.252.131): icmp_seq=1 ttl=49 time=224 ms
+03:54:40 64 bytes from ip1d-lb3-prd.iad.github.com (192.30.252.131): icmp_seq=2 ttl=49 time=228 ms
+03:54:41 64 bytes from ip1d-lb3-prd.iad.github.com (192.30.252.131): icmp_seq=3 ttl=49 time=228 ms
+03:54:41
+03:54:41 --- github.com ping statistics ---
+03:54:41 3 packets transmitted, 3 received, 0% packet loss, time 2001ms
+03:54:41 rtt min/avg/max/mdev = 224.729/226.978/228.149/1.590 ms
+```
+
 ## Advanced Usage
 Time Cat prepends each line of input with a timestamp followed by a single tab character. This means that it is very easy to remove the timestamps again. You can use `cut -f 2`, for example.
 ```
