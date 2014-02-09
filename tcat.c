@@ -44,15 +44,14 @@ static void version(FILE* output) {
     version_patch);
 }
 
-static void usage(FILE* output, const char* arg) {
-  if (arg) {
-    fprintf(output, "Invalid option: %s\n", arg);
-  }
+static inline void usage(FILE* output) {
   fprintf(output,
-          "Options:\n"
-          "  -v, --version print %s version\n"
-          "  -h, --help    print this help\n"
-          "Help can be found at github.com/marcomorain/tcat\n",
+          "\n"
+          "Available Options:\n"
+          "\t-v, --version\tprint %s version\n"
+          "\t-h, --help\tprint this help\n"
+          "\n"
+          "Help can be found at https://github.com/marcomorain/tcat\n",
           program_name);
 }
 
@@ -62,6 +61,8 @@ static int match(const char* x, const char* a, const char* b) {
 
 int main(int argc, char** argv) {
 
+  int bad_usage = 0;
+
   for (int i = 1; i < argc; i++) {
     if (match(argv[i], "-v", "--version")) {
       version(stdout);
@@ -69,12 +70,18 @@ int main(int argc, char** argv) {
     }
 
     if (match(argv[i], "-h", "--help")) {
-      usage(stdout, 0);
+      usage(stdout);
       return EXIT_SUCCESS;
     }
 
-    // Unrecognised command
-    usage(stderr, argv[i]);
+    // Show all bad options
+    bad_usage = 1;
+    fprintf(stderr, "Invalid option:\t%s\n", argv[i]);
+  }
+
+  // Show correct usage
+  if (bad_usage) {
+    usage(stderr);
     return EXIT_FAILURE;
   }
 
