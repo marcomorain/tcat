@@ -1,16 +1,17 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <unistd.h>
 
 enum {
   version_major = 0,
   version_minor = 1,
-  version_patch = 1
+  version_patch = 2
 };
 
 static const char program_name[] = "tcat";
-static const char format[]       = "%Y-%m-%dT%H:%M:%S %Z\t";
+static const char format[]       = "%FT%T%z\t";
 
 static void io_error(FILE* file) {
   if (feof(file)) {
@@ -83,6 +84,10 @@ int main(int argc, char** argv) {
   if (bad_usage) {
     usage(stderr);
     return EXIT_FAILURE;
+  }
+
+  if (isatty(fileno(stdin))) {
+    fprintf(stderr, "Warning: input is from TTY\n");
   }
 
   int last = '\n';

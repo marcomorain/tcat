@@ -1,5 +1,9 @@
 # tcat Changelog
 
+## Version 0.1.2 (2014-02-09)
+- Change the output format to be an ISO 8601 timestemp.
+- Print a warning to stderr when input is from a TTY.
+
 ## Version 0.1.1 (2014-02-08)
 - Fix build issues on gcc/linux
 - Add space before timeszone (PR #1)
