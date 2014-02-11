@@ -1,8 +1,10 @@
+
+PREFIX ?= /usr/local
 TARGET = tcat
 LIBS = -lm
 CFLAGS = -D_POSIX_C_SOURCE=200112L -std=c99 -Wall -Wextra -Werror -Os
 
-.PHONY: default all clean
+.PHONY: default all clean install uninstall
 
 default: $(TARGET)
 all: default
@@ -21,3 +23,9 @@ $(TARGET): $(OBJECTS)
 clean:
 	-rm -f *.o
 	-rm -f $(TARGET)
+
+install: $(TARGET)
+	cp -f $(TARGET) $(PREFIX)/bin/$(TARGET)
+
+uninstall:
+	rm -f $(PREFIX)/bin/$(TARGET)
