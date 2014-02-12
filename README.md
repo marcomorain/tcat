@@ -38,8 +38,7 @@ $ ping -c 3 github.com | tcat
 2014-02-09T20:58:44+0000  round-trip min/avg/max/stddev = 106.783/110.892/116.658/4.198 ms
 ```
 
-## Advanced Usage
-Time Cat prepends each line of input with a timestamp followed by a single tab character. This means that it is very easy to remove the timestamps again. You can use `cut -f 2`, for example.
+Time Cat prepends each line of input with a timestamp followed by a single tab character. This will be the first whitespace character on the live. This means that it is very easy to remove the timestamps again. You can use `cut -f 2`, for example.
 ```
 $ echo foo
 foo
@@ -48,6 +47,18 @@ $ echo foo | tcat
 $ echo foo | tcat | cut -f 2
 foo
 ```
+
+## Building
+Time Cat should build easily on any Unix. It has been tested on Ubuntu and OSX using gcc and clang. 
+
+To build Time Cat just navigate to where you have cloned the respository and run `make`.
+
+```
+make
+make install
+```
+
+If you have any issues building it please open a bug-report including the compiler and platform that you are building on (the output from `cc -v` and `uname -a` is ideal).
 
 ## Contibuting
 If you'd like to contribute to `tcat`, that's awesome. Feel free to open a pull request or log an issue. For recent changes see the [changelog](https://github.com/marcomorain/tcat/blob/master/CHANGELOG.md).
