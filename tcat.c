@@ -11,7 +11,8 @@ enum {
 };
 
 static const char program_name[] = "tcat";
-static const char format[]       = "%FT%T%z\t";
+static const char env_flag[]     = "TCAT_FORMAT";
+static const char *format        = "%FT%T%z\t";
 
 static void io_error(FILE* file) {
   if (feof(file)) {
@@ -88,6 +89,11 @@ int main(int argc, char** argv) {
 
   if (isatty(fileno(stdin))) {
     fprintf(stderr, "Warning: input is from TTY\n");
+  }
+
+  char *format_env = getenv(env_flag);
+  if (format_env) {
+    format = format_env;
   }
 
   int last = '\n';
