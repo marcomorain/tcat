@@ -13,7 +13,7 @@ $ echo "Hello world" | tcat
 ```
 
 ## Usage
-The following is the ouput from the `ping` command: 
+The following is the ouput from the `ping` command:
 ```
 $ ping -c 3 github.com
 PING github.com (192.30.252.131): 56 data bytes
@@ -38,7 +38,24 @@ $ ping -c 3 github.com | tcat
 2014-02-09T20:58:44+0000  round-trip min/avg/max/stddev = 106.783/110.892/116.658/4.198 ms
 ```
 
-Time Cat prepends each line of input with a timestamp followed by a single tab character. This will be the first whitespace character on the live. This means that it is very easy to remove the timestamps again. You can use `cut -f 2`, for example.
+The format that the time is printed in can be overiden by the user in one of two ways. You can specify the format using the `-f` or `--format` command-line options. You can also set the format by setting the `TCAT_FORMAT` environmental variable. The format should be specified using the `strftime(3)` syntax. If the format is overridden using the command-line options, this will take precence over the environment variable.
+
+Here are three examples showing the default usage, format passed as a command-line option, and through the environment variable.
+
+```
+$ echo default | tcat
+2014-03-08T13:15:43+0000  default
+
+$ echo command-line | tcat --format '%H:%M:%S'
+13:17:03 command-line
+
+$ echo environment | TCAT_FORMAT='%Y/%m/%d' tcat
+2014/03/08  environment
+```
+
+## Advanced Usage
+Time Cat prepends each line of input with a timestamp followed by a single tab character. This will be the first whitespace character on the line. This means that it is very easy to remove the timestamps again. You can use `cut -f 2`, for example.
+
 ```
 $ echo foo
 foo
@@ -49,7 +66,7 @@ foo
 ```
 
 ## Building
-Time Cat should build easily on any Unix. It has been tested on Ubuntu and OSX using gcc and clang. 
+Time Cat should build easily on any Unix. It has been tested on Ubuntu and OSX using gcc and clang.
 
 To build Time Cat just navigate to where you have cloned the respository and run `make`.
 

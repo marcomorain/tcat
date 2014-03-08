@@ -10,9 +10,10 @@ enum {
   version_patch = 2
 };
 
-static const char program_name[] = "tcat";
-static const char env_flag[]     = "TCAT_FORMAT";
-static const char *format        = "%FT%T%z\t";
+static const char  program_name[]   = "tcat";
+static const char  env_flag[]       = "TCAT_FORMAT";
+static const char  default_format[] = "%FT%T%z";
+static const char* format           = default_format;
 
 static void io_error(FILE* file) {
   if (feof(file)) {
@@ -36,6 +37,9 @@ static void print_time() {
   if(len != fwrite(buffer, 1, len, stdout)){
     io_error(stdout);
   }
+  if (fputc('\t', stdout) == EOF) {
+   io_error(stdout); 
+  }
 }
 
 static void version(FILE* output) {
@@ -52,9 +56,10 @@ static inline void usage(FILE* output) {
           "Available Options:\n"
           "\t-v, --version\tprint %s version\n"
           "\t-h, --help\tprint this help\n"
+          "\t-f, --format\tset time format string in strftime syntax (default: \"%s\")\n"
           "\n"
           "Help can be found at https://github.com/marcomorain/tcat\n",
-          program_name);
+          program_name, default_format);
 }
 
 static int match(const char* x, const char* a, const char* b) {
@@ -65,6 +70,11 @@ int main(int argc, char** argv) {
 
   int bad_usage = 0;
 
+  char *format_env = getenv(env_flag);
+  if (format_env) {
+    format = format_env;
+  }
+
   for (int i = 1; i < argc; i++) {
     if (match(argv[i], "-v", "--version")) {
       version(stdout);
@@ -74,6 +84,15 @@ int main(int argc, char** argv) {
     if (match(argv[i], "-h", "--help")) {
       usage(stdout);
       return EXIT_SUCCESS;
+    }
+
+    if (match(argv[i], "-f", "--format")) {
+      if (++i >= argc) {
+        fprintf(stderr, "Error: no format string given provided for %s option\n", argv[i-1]);
+        return EXIT_FAILURE;
+      }
+      format = argv[i];
+      continue;
     }
 
     // Show all bad options
@@ -89,11 +108,6 @@ int main(int argc, char** argv) {
 
   if (isatty(fileno(stdin))) {
     fprintf(stderr, "Warning: input is from TTY\n");
-  }
-
-  char *format_env = getenv(env_flag);
-  if (format_env) {
-    format = format_env;
   }
 
   int last = '\n';
