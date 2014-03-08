@@ -1,5 +1,8 @@
 # tcat Changelog
 
+## Version 0.2.0 (2014-03-08)
+- Allow the user to override the output format using command line or environment variables.
+
 ## Version 0.1.2 (2014-02-09)
 - Change the output format to be an ISO 8601 timestemp.
 - Print a warning to stderr when input is from a TTY.
