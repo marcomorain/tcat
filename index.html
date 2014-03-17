@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>tcat by marcomorain</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>tcat</h1>
+        <p>Time Cat</p>
+
+        <p class="view"><a href="https://github.com/marcomorain/tcat">View the Project on GitHub <small>marcomorain/tcat</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/marcomorain/tcat/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/marcomorain/tcat/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/marcomorain/tcat">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="time-cat" class="anchor" href="#time-cat"><span class="octicon octicon-link"></span></a>Time Cat</h1>
+
+<p>Time Cat is a program to add timestamps to text. It is useful for adding timestamps to the logs of long running operations, so that you can easily monitor the progress and time elapsed.</p>
+
+<p>Time Cat is designed to be as simple as possible to use. It simple reads from <code>stdin</code> and echoes the input to <code>stdout</code> prepended with a timestamp and a single tab character.</p>
+
+<p>Time Cat allocates no memory at time – it only uses stack allocation. This means that you can pipe very long running processes to it wihtout worrying about memory leaks or fragmentation, which might cause the process to slow down or crash.</p>
+
+<p>The time is printed as a full <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> timestamp, including timezone offset. An example output is <code>2014-02-09T21:00:17+0000</code>. This ensures that there is no ambiguity in the printed time. There are no whitespace characters in the timestamp. It is is easy to parse and deal with in other tools. The time format acn be overriden by user if desired.</p>
+
+<pre><code>$ echo "Hello world" | tcat
+2014-02-09T21:00:17+0000  Hello world
+</code></pre>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>The following is the ouput from the <code>ping</code> command:</p>
+
+<pre><code>$ ping -c 3 github.com
+PING github.com (192.30.252.131): 56 data bytes
+64 bytes from 192.30.252.131: icmp_seq=0 ttl=49 time=104.271 ms
+64 bytes from 192.30.252.131: icmp_seq=1 ttl=49 time=111.290 ms
+64 bytes from 192.30.252.131: icmp_seq=2 ttl=49 time=117.178 ms
+
+--- github.com ping statistics ---
+3 packets transmitted, 3 packets received, 0.0% packet loss
+round-trip min/avg/max/stddev = 104.271/110.913/117.178/5.276 ms
+</code></pre>
+
+<p>The following is the same command, but this time the output has been piped through <code>tcat</code> to add a timestamp to each line.</p>
+
+<pre><code>$ ping -c 3 github.com | tcat
+2014-02-09T20:58:42+0000  PING github.com (192.30.252.131): 56 data bytes
+2014-02-09T20:58:42+0000  64 bytes from 192.30.252.131: icmp_seq=0 ttl=53 time=109.236 ms
+2014-02-09T20:58:43+0000  64 bytes from 192.30.252.131: icmp_seq=1 ttl=53 time=116.658 ms
+2014-02-09T20:58:44+0000  64 bytes from 192.30.252.131: icmp_seq=2 ttl=53 time=106.783 ms
+2014-02-09T20:58:44+0000
+2014-02-09T20:58:44+0000  --- github.com ping statistics ---
+2014-02-09T20:58:44+0000  3 packets transmitted, 3 packets received, 0.0% packet loss
+2014-02-09T20:58:44+0000  round-trip min/avg/max/stddev = 106.783/110.892/116.658/4.198 ms
+</code></pre>
+
+<p>The format that the time is printed in can be overiden by the user in one of two ways. You can specify the format using the <code>-f</code> or <code>--format</code> command-line options. You can also set the format by setting the <code>TCAT_FORMAT</code> environmental variable. The format should be specified using the <code>strftime(3)</code> syntax. If the format is overridden using the command-line options, this will take precence over the environment variable.</p>
+
+<p>Here are three examples showing the default usage, format passed as a command-line option, and through the environment variable.</p>
+
+<pre><code>$ echo default | tcat
+2014-03-08T13:15:43+0000  default
+
+$ echo command-line | tcat --format '%H:%M:%S'
+13:17:03 command-line
+
+$ echo environment | TCAT_FORMAT='%Y/%m/%d' tcat
+2014/03/08  environment
+</code></pre>
+
+<h2>
+<a name="building" class="anchor" href="#building"><span class="octicon octicon-link"></span></a>Building</h2>
+
+<p>Time Cat should build easily on any Unix-like system. It has been tested on Ubuntu and OSX using gcc and clang.</p>
+
+<p>To build Time Cat just navigate to where you have cloned the respository and run <code>make</code>.</p>
+
+<pre><code>make
+make install
+</code></pre>
+
+<p>If you have any issues building it please open a bug-report including the compiler and platform that you are building on (the output from <code>cc -v</code> and <code>uname -a</code> is ideal).</p>
+
+<h2>
+<a name="contibuting" class="anchor" href="#contibuting"><span class="octicon octicon-link"></span></a>Contibuting</h2>
+
+<p>If you'd like to contribute to <code>tcat</code>, that's awesome. Feel free to open a pull request or log an issue. For recent changes see the <a href="https://github.com/marcomorain/tcat/blob/master/CHANGELOG.md">changelog</a>.</p>
+
+<p><a href="https://travis-ci.org/marcomorain/tcat"><img src="https://travis-ci.org/marcomorain/tcat.png?branch=master" alt="Build Status"></a></p>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>Time Cat is released under the <a href="http://www.opensource.org/licenses/MIT">MIT License</a>.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/marcomorain">marcomorain</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
