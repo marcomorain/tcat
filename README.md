@@ -1,11 +1,11 @@
 # Time Cat
 Time Cat is a program to add timestamps to text. It is useful for adding timestamps to the logs of long running operations, so that you can easily monitor the progress and time elapsed.
 
-Time Cat has no options or configuration. It simple reads from `stdin` and echoes the input to `stdout` prepended with a timestamp and a single tab character.
+Time Cat is designed to be as simple as possible to use. It simple reads from `stdin` and echoes the input to `stdout` prepended with a timestamp and a single tab character.
 
-Time Cat allocated no memory at time – it only uses stack allocator. This means that you can pipe very long running processes to it wihtout worrying about memory leaks or memory fragmentation causing the process to slow down or crash.
+Time Cat allocates no memory at time – it only uses stack allocation. This means that you can pipe very long running processes to it wihtout worrying about memory leaks or fragmentation, which might cause the process to slow down or crash.
 
-The time is printed as a full [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) timestamp, including timezone offset. An example output is `2014-02-09T21:00:17+0000`. This ensures that there is no ambiguity in the printed time. There are no whitespace characters in the timestamp. It is is easy to parse and deal with in other tools.
+The time is printed as a full [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) timestamp, including timezone offset. An example output is `2014-02-09T21:00:17+0000`. This ensures that there is no ambiguity in the printed time. There are no whitespace characters in the timestamp. It is is easy to parse and deal with in other tools. The time format acn be overriden by user if desired.
 
 ```
 $ echo "Hello world" | tcat
@@ -53,20 +53,8 @@ $ echo environment | TCAT_FORMAT='%Y/%m/%d' tcat
 2014/03/08  environment
 ```
 
-## Advanced Usage
-Time Cat prepends each line of input with a timestamp followed by a single tab character. This will be the first whitespace character on the line. This means that it is very easy to remove the timestamps again. You can use `cut -f 2`, for example.
-
-```
-$ echo foo
-foo
-$ echo foo | tcat
-2014-02-09T21:00:33+0000  foo
-$ echo foo | tcat | cut -f 2
-foo
-```
-
 ## Building
-Time Cat should build easily on any Unix. It has been tested on Ubuntu and OSX using gcc and clang.
+Time Cat should build easily on any Unix-like system. It has been tested on Ubuntu and OSX using gcc and clang.
 
 To build Time Cat just navigate to where you have cloned the respository and run `make`.
 
