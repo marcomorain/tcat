@@ -14,6 +14,7 @@ static const char  program_name[]   = "tcat";
 static const char  env_flag[]       = "TCAT_FORMAT";
 static const char  default_format[] = "%FT%T%z";
 static const char* format           = default_format;
+static unsigned int use_local_time  = 0;
 
 static void io_error(FILE* file) {
   if (feof(file)) {
@@ -32,7 +33,11 @@ static void print_time() {
   time_t rawtime;
   time(&rawtime);
   struct tm timeinfo;
-  gmtime_r(&rawtime, &timeinfo);
+  if (use_local_time) {
+      localtime_r(&rawtime, &timeinfo);
+  } else {
+      gmtime_r(&rawtime, &timeinfo);
+  }
   const size_t len = strftime(buffer, buffer_max, format, &timeinfo);
   if(len != fwrite(buffer, 1, len, stdout)){
     io_error(stdout);
@@ -56,6 +61,7 @@ static inline void usage(FILE* output) {
           "Available Options:\n"
           "\t-v, --version\tprint %s version\n"
           "\t-h, --help\tprint this help\n"
+          "\t-l, --local\tuse local time instead of UTC\n"
           "\t-f, --format\tset time format string in strftime syntax (default: \"%s\")\n"
           "\n"
           "Help can be found at https://github.com/marcomorain/tcat\n",
@@ -84,6 +90,11 @@ int main(int argc, char** argv) {
     if (match(argv[i], "-h", "--help")) {
       usage(stdout);
       return EXIT_SUCCESS;
+    }
+
+    if (match(argv[i], "-l", "--local")) {
+        use_local_time = 1;
+        continue;
     }
 
     if (match(argv[i], "-f", "--format")) {
