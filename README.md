@@ -53,6 +53,18 @@ $ echo environment | TCAT_FORMAT='%Y/%m/%d' tcat
 2014/03/08  environment
 ```
 
+The time is formatted in UTC by default. This can be changed to output in local
+time using the `--local` or `-l` option.
+
+```
+$ echo "UTC Example" | tcat
+2015-01-05T14:22:34+0000  UTC Example
+
+$ TZ="/usr/share/zoneinfo/America/Los_Angeles"
+$ echo "Local Example" | tcat --local
+2015-01-05T14:23:00+0000  Local Example
+```
+
 ## Building
 Time Cat should build easily on any Unix-like system. It has been tested on Ubuntu and OSX using gcc and clang.
 
