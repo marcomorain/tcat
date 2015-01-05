@@ -6,15 +6,16 @@
 
 enum {
   version_major = 0,
-  version_minor = 1,
-  version_patch = 2
+  version_minor = 2,
+  version_patch = 1
 };
+
+typedef struct tm *(*time_format)(const time_t *, struct tm *);
 
 static const char  program_name[]   = "tcat";
 static const char  env_flag[]       = "TCAT_FORMAT";
 static const char  default_format[] = "%FT%T%z";
 static const char* format           = default_format;
-static unsigned int use_local_time  = 0;
 
 static void io_error(FILE* file) {
   if (feof(file)) {
@@ -27,23 +28,19 @@ static void io_error(FILE* file) {
   exit(EXIT_FAILURE);
 }
 
-static void print_time() {
+static void print_time(time_format time_format) {
   enum { buffer_max = 32 };
   char buffer[buffer_max];
   time_t rawtime;
   time(&rawtime);
   struct tm timeinfo;
-  if (use_local_time) {
-      localtime_r(&rawtime, &timeinfo);
-  } else {
-      gmtime_r(&rawtime, &timeinfo);
-  }
+  time_format(&rawtime, &timeinfo);
   const size_t len = strftime(buffer, buffer_max, format, &timeinfo);
   if(len != fwrite(buffer, 1, len, stdout)){
     io_error(stdout);
   }
   if (fputc('\t', stdout) == EOF) {
-   io_error(stdout); 
+   io_error(stdout);
   }
 }
 
@@ -81,6 +78,8 @@ int main(int argc, char** argv) {
     format = format_env;
   }
 
+  time_format time_format = gmtime_r;
+
   for (int i = 1; i < argc; i++) {
     if (match(argv[i], "-v", "--version")) {
       version(stdout);
@@ -93,8 +92,8 @@ int main(int argc, char** argv) {
     }
 
     if (match(argv[i], "-l", "--local")) {
-        use_local_time = 1;
-        continue;
+      time_format = localtime_r;
+      continue;
     }
 
     if (match(argv[i], "-f", "--format")) {
@@ -124,7 +123,7 @@ int main(int argc, char** argv) {
   int last = '\n';
   for(int c = fgetc(stdin); c != EOF; c = fgetc(stdin)) {
     if (last == '\n') {
-      print_time();
+      print_time(time_format);
     }
     if (EOF == fputc(c, stdout)) {
       io_error(stdout);
