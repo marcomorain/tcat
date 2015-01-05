@@ -5,7 +5,7 @@ Time Cat is designed to be as simple as possible to use. It simple reads from `s
 
 Time Cat allocates no memory at time – it only uses stack allocation. This means that you can pipe very long running processes to it wihtout worrying about memory leaks or fragmentation, which might cause the process to slow down or crash.
 
-The time is printed as a full [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) timestamp, including timezone offset. An example output is `2014-02-09T21:00:17+0000`. This ensures that there is no ambiguity in the printed time. There are no whitespace characters in the timestamp. It is is easy to parse and deal with in other tools. The time format acn be overriden by user if desired.
+The time is printed as a full [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) timestamp, including timezone offset. An example output is `2014-02-09T21:00:17+0000`. This ensures that there is no ambiguity in the printed time. There are no whitespace characters in the timestamp. It is is easy to parse and deal with in other tools. The time format can be overriden by user if desired, by using the `--format` option.
 
 ```
 $ echo "Hello world" | tcat
