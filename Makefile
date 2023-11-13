@@ -1,5 +1,6 @@
 
 PREFIX ?= /usr/local
+BINDIR = $(PREFIX)/bin
 TARGET = tcat
 LIBS = -lm
 CFLAGS = -D_POSIX_C_SOURCE=200112L -std=c99 -Wall -Wextra -Werror -Os
@@ -25,7 +26,7 @@ clean:
 	-rm -f $(TARGET)
 
 install: $(TARGET)
-	cp -f $(TARGET) $(PREFIX)/bin/$(TARGET)
+	cp -f $(TARGET) $(BINDIR)/$(TARGET)
 
 uninstall:
-	rm -f $(PREFIX)/bin/$(TARGET)
+	rm -f $(BINDIR)/$(TARGET)
