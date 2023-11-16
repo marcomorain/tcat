@@ -77,7 +77,10 @@ make install
 
 If you have any issues building it please open a bug-report including the compiler and platform that you are building on (the output from `cc -v` and `uname -a` is ideal).
 
-## Contibuting
+## Caveats
+Note that the name `tcat` can conflict with the `tcat` binary from [libgsm](https://www.quut.com/gsm/), if you also have that installed. You can work around this conflict by overriding the `TARGET` and/or `BINDIR` Makefile variables when building `tcat`.
+
+## Contributing
 If you'd like to contribute to `tcat`, that's awesome. Feel free to open a pull request or log an issue. For recent changes see the [changelog](https://github.com/marcomorain/tcat/blob/master/CHANGELOG.md).
 
 [![Build Status](https://travis-ci.org/marcomorain/tcat.png?branch=master)](https://travis-ci.org/marcomorain/tcat)
